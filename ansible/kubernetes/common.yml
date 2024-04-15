@@ -148,5 +148,3 @@
         name: kubectl=1.29.*
         state: present
         force: yes # allow downgrades
-    - name: initialize cluster
-      command: kubeadm init --pod-network-cidr 172.18.0.0/16 

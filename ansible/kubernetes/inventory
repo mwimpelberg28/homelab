@@ -1,2 +1,9 @@
-[all]
+
+
+[controllers]
 kube-controller-01
+
+
+[workers]
+kube-worker-01
+kube-worker-02
