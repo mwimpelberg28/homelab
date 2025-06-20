@@ -26,8 +26,7 @@ minio:
 # Add service configuration here (right after minio)
 service:
   type: LoadBalancer
-  ports:
-    http: 3100
+  port: 3100
       
 deploymentMode: SingleBinary
 
