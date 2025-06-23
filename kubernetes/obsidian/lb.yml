@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: obsidian-loadbalancer
+spec:
+  selector:
+    app: obsidian
+  ports:
+    - protocol: TCP
+      port: 3000         # Externally accessible port
+      targetPort: 3000   # Port your Obsidian container listens on
+  type: LoadBalancer
+

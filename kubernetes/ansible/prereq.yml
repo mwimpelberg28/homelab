@@ -1,6 +1,6 @@
 ---
 - name: Kubernetes Master Node Setup on Ubuntu 24.04
-  hosts: kubernetes
+  hosts: cluster2
   become: yes
   tasks:
     - name: Install required packages
@@ -73,7 +73,7 @@
 
     - name: Add Kubernetes repository
       apt_repository:
-        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /"
+        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /"
         state: present
 
     - name: Install kubeadm, kubelet, kubectl
