@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?> <mxfile host="app.diagrams.net" modified="2025-12-06T21:19:00.000Z" agent="Perplexity" version="24.1.8" type="device"> <diagram id="homelab-tech-icons" name="Homelab Network - Technical Icons"> <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0"> <root> <mxCell id="0"/> <mxCell id="1" parent="0"/>
+text
     <!-- WAN -->
     <mxCell id="2" value="" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#0277bd;fontSize=16;" vertex="1" parent="1">
       <mxGeometry x="390" y="30" width="120" height="60" as="geometry"/>
@@ -95,3 +97,4 @@
     <mxCell id="c9" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#8e24aa;dashed=1;" edge="1" parent="1" source="4" target="12"/>
   </root>
 </mxGraphModel>
+</diagram> </mxfile>
