@@ -1,73 +1,97 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<mxfile host="app.diagrams.net" modified="2025-12-06T18:20:00.000Z" agent="Perplexity" version="24.1.8" type="device">
-  <diagram id="homelab" name="Homelab Network">
-    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0"/>
-        <mxCell id="1" parent="0"/>
-        
-        <!-- WAN -->
-        <mxCell id="2" value="WAN" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#0277bd;fontSize=16;" vertex="1" parent="1">
-          <mxGeometry x="390" y="30" width="120" height="60" as="geometry"/>
-        </mxCell>
-        
-        <!-- UDM Pro -->
-        <mxCell id="3" value="UDM Pro Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="370" y="130" width="140" height="60" as="geometry"/>
-        </mxCell>
-        
-        <!-- Flex Switch -->
-        <mxCell id="4" value="Flex Switch" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;fontSize=14;" vertex="1" parent="1">
-          <mxGeometry x="350" y="220" width="160" height="60" as="geometry"/>
-        </mxCell>
-        
-        <!-- Proxmox Cluster -->
-        <mxCell id="5" value="Proxmox 3-Node Cluster" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;dashed=1;" vertex="1" parent="1">
-          <mxGeometry x="60" y="320" width="240" height="120" as="geometry"/>
-        </mxCell>
-        <mxCell id="6" value="Node 1" style="rectangle;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#43a047;" vertex="1" parent="5">
-          <mxGeometry x="20" y="30" width="70" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="7" value="Node 2" style="rectangle;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#43a047;" vertex="1" parent="5">
-          <mxGeometry x="100" y="30" width="70" height="40" as="geometry"/>
-        </mxCell>
-        <mxCell id="8" value="Node 3" style="rectangle;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#43a047;" vertex="1" parent="5">
-          <mxGeometry x="180" y="30" width="70" height="40" as="geometry"/>
-        </mxCell>
-        
-        <!-- RPi4 -->
-        <mxCell id="9" value="RPi4 Proxy/DNS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;" vertex="1" parent="1">
-          <mxGeometry x="370" y="320" width="120" height="70" as="geometry"/>
-        </mxCell>
-        
-        <!-- NAS -->
-        <mxCell id="10" value="DS220j NAS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#d84315;" vertex="1" parent="1">
-          <mxGeometry x="530" y="320" width="120" height="60" as="geometry"/>
-        </mxCell>
-        
-        <!-- APs -->
-        <mxCell id="11" value="U6-LR AP 1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;" vertex="1" parent="1">
-          <mxGeometry x="150" y="470" width="90" height="50" as="geometry"/>
-        </mxCell>
-        <mxCell id="12" value="U6-LR AP 2" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;" vertex="1" parent="1">
-          <mxGeometry x="420" y="470" width="90" height="50" as="geometry"/>
-        </mxCell>
-        
-        <!-- Connections -->
-        <mxCell id="c1" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#0277bd;strokeWidth=2;" edge="1" parent="1" source="2" target="3">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c2" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;strokeWidth=3;" edge="1" parent="1" source="3" target="4">
-          <mxGeometry relative="1" as="geometry"/>
-        </mxCell>
-        <mxCell id="c3" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="6" target="4"/>
-        <mxCell id="c4" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="7" target="4"/>
-        <mxCell id="c5" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="8" target="4"/>
-        <mxCell id="c6" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="9" target="4"/>
-        <mxCell id="c7" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="10" target="4"/>
-        <mxCell id="c8" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#8e24aa;dashed=1;" edge="1" parent="1" source="4" target="11"/>
-        <mxCell id="c9" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#8e24aa;dashed=1;" edge="1" parent="1" source="4" target="12"/>
-      </root>
-    </mxGraphModel>
-  </diagram>
-</mxfile>
+    <!-- WAN -->
+    <mxCell id="2" value="" style="shape=cloud;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#0277bd;fontSize=16;" vertex="1" parent="1">
+      <mxGeometry x="390" y="30" width="120" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="2_label" value="WAN" style="text;align=center;verticalAlign=middle;html=1;fontSize=14;fontColor=#01579b" vertex="1" parent="2">
+      <mxGeometry x="0" y="0" width="120" height="20" as="geometry"/>
+    </mxCell>
+    
+    <!-- UDM Pro - router icon -->
+    <mxCell id="3" value="" style="shape=mxgraph.network.router;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976d2;" vertex="1" parent="1">
+      <mxGeometry x="370" y="130" width="140" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="3_label" value="UDM Pro Gateway" style="text;align=center;verticalAlign=middle;html=1;fontSize=14;fontColor=#0d47a1" vertex="1" parent="3">
+      <mxGeometry x="0" y="0" width="140" height="20" as="geometry"/>
+    </mxCell>
+    
+    <!-- Flex Switch - switch icon -->
+    <mxCell id="4" value="" style="shape=mxgraph.network.switch;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#388e3c;" vertex="1" parent="1">
+      <mxGeometry x="350" y="220" width="160" height="70" as="geometry"/>
+    </mxCell>
+    <mxCell id="4_label" value="Flex Switch PoE" style="text;align=center;verticalAlign=middle;html=1;fontSize=14;fontColor=#1b5e20" vertex="1" parent="4">
+      <mxGeometry x="0" y="0" width="160" height="20" as="geometry"/>
+    </mxCell>
+    
+    <!-- Proxmox Cluster container with server icons -->
+    <mxCell id="5" value="Proxmox 3-Node Cluster" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#2e7d32;dashed=1;fontSize=14;fontColor=#1b5e20;align=center" vertex="1" parent="1">
+      <mxGeometry x="60" y="320" width="240" height="140" as="geometry"/>
+    </mxCell>
+    
+    <!-- Proxmox Nodes - server icons inside cluster -->
+    <mxCell id="6" value="" style="shape=mxgraph.network.server;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#43a047;" vertex="1" parent="5">
+      <mxGeometry x="20" y="40" width="60" height="40" as="geometry"/>
+    </mxCell>
+    <mxCell id="6_label" value="Node 1" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#1b5e20" vertex="1" parent="6">
+      <mxGeometry x="0" y="0" width="60" height="20" as="geometry"/>
+    </mxCell>
+    
+    <mxCell id="7" value="" style="shape=mxgraph.network.server;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#43a047;" vertex="1" parent="5">
+      <mxGeometry x="100" y="40" width="60" height="40" as="geometry"/>
+    </mxCell>
+    <mxCell id="7_label" value="Node 2" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#1b5e20" vertex="1" parent="7">
+      <mxGeometry x="0" y="0" width="60" height="20" as="geometry"/>
+    </mxCell>
+    
+    <mxCell id="8" value="" style="shape=mxgraph.network.server;whiteSpace=wrap;html=1;fillColor=#a5d6a7;strokeColor=#43a047;" vertex="1" parent="5">
+      <mxGeometry x="180" y="40" width="60" height="40" as="geometry"/>
+    </mxCell>
+    <mxCell id="8_label" value="Node 3 (K8s Primary)" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#1b5e20" vertex="1" parent="8">
+      <mxGeometry x="0" y="0" width="60" height="35" as="geometry"/>
+    </mxCell>
+     
+    <!-- Raspberry Pi icon (computer) -->
+    <mxCell id="9" value="" style="shape=mxgraph.os.linux;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;" vertex="1" parent="1">
+      <mxGeometry x="370" y="320" width="140" height="90" as="geometry"/>
+    </mxCell>
+    <mxCell id="9_label" value="RPi4 Proxy/DNS" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#bf360c" vertex="1" parent="9">
+      <mxGeometry x="6" y="70" width="130" height="20" as="geometry"/>
+    </mxCell>
+    
+    <!-- Synology NAS - server rack icon -->
+    <mxCell id="10" value="" style="shape=mxgraph.leaning_server.rack;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#d84315;" vertex="1" parent="1">
+      <mxGeometry x="550" y="320" width="140" height="80" as="geometry"/>
+    </mxCell>
+    <mxCell id="10_label" value="DS220j NAS RAID1" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#b71c1c" vertex="1" parent="10">
+      <mxGeometry x="0" y="65" width="140" height="20" as="geometry"/>
+    </mxCell>
+    
+    <!-- U6-LR APs - wireless access point icon -->
+    <mxCell id="11" value="" style="shape=mxgraph.network.wifi;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;" vertex="1" parent="1">
+      <mxGeometry x="150" y="470" width="90" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="11_label" value="U6-LR AP 1" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#4a148c" vertex="1" parent="11">
+      <mxGeometry x="0" y="47" width="90" height="20" as="geometry"/>
+    </mxCell>
+    <mxCell id="12" value="" style="shape=mxgraph.network.wifi;whiteSpace=wrap;html=1;fillColor=#e1bee7;strokeColor=#8e24aa;" vertex="1" parent="1">
+      <mxGeometry x="420" y="470" width="90" height="60" as="geometry"/>
+    </mxCell>
+    <mxCell id="12_label" value="U6-LR AP 2" style="text;align=center;verticalAlign=middle;html=1;fontSize=12;fontColor=#4a148c" vertex="1" parent="12">
+      <mxGeometry x="0" y="47" width="90" height="20" as="geometry"/>
+    </mxCell>
+    
+    <!-- Connections -->
+    <mxCell id="c1" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#0277bd;strokeWidth=2;" edge="1" parent="1" source="2" target="3">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="c2" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;strokeWidth=3;" edge="1" parent="1" source="3" target="4">
+      <mxGeometry relative="1" as="geometry"/>
+    </mxCell>
+    <mxCell id="c3" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="6" target="4"/>
+    <mxCell id="c4" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="7" target="4"/>
+    <mxCell id="c5" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="8" target="4"/>
+    <mxCell id="c6" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="9" target="4"/>
+    <mxCell id="c7" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#388e3c;" edge="1" parent="1" source="10" target="4"/>
+    <mxCell id="c8" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#8e24aa;dashed=1;" edge="1" parent="1" source="4" target="11"/>
+    <mxCell id="c9" style="edgeStyle=orthogonalEdgeStyle;endArrow=classic;strokeColor=#8e24aa;dashed=1;" edge="1" parent="1" source="4" target="12"/>
+  </root>
+</mxGraphModel>
