@@ -1,0 +1,56 @@
+---
+- name: Upgrade all packages, set static IP, and configure passwordless sudo
+  hosts: cluster1
+  become: yes
+
+  vars:
+    # Set these variables to your network settings
+    netplan_config_file: /etc/netplan/50-cloud-init.yaml
+    interface_name: "{{ ansible_default_ipv4.interface }}"
+    static_ip: "{{ ansible_default_ipv4.address }}/24"
+    gateway: 10.4.20.1           # Set your gateway
+    dns_servers: [10.4.20.146,8.8.8.8] # Set your DNS servers
+    domain: ["home.mwimpelberg.com"]
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages to latest
+      apt:
+        upgrade: dist
+        autoremove: yes
+        autoclean: yes
+
+    - name: Configure Netplan for static IP
+      copy:
+        dest: "{{ netplan_config_file }}"
+        content: |
+          network:
+            version: 2
+            renderer: networkd
+            ethernets:
+              {{ interface_name }}:
+                dhcp4: no
+                addresses: [{{ static_ip }}]
+                gateway4: {{ gateway }}
+                nameservers:
+                  addresses: {{ dns_servers }}
+                  search: {{ domain }}
+      notify: Apply netplan
+
+    - name: Ensure mwimpelberg has passwordless sudo
+      lineinfile:
+        path: /etc/sudoers.d/mwimpelberg
+        create: yes
+        mode: '0440'
+        line: 'mwimpelberg ALL=(ALL) NOPASSWD:ALL'
+        validate: 'visudo -cf %s'
+    - name: reboot
+      reboot:
+
+  handlers:
+    - name: Apply netplan
+      command: netplan apply
+
