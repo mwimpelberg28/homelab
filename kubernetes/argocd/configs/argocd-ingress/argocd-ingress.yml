@@ -4,7 +4,7 @@ metadata:
   name: argocd-server-lb
   namespace: argocd
   annotations:
-    metallb.universe.tf/address-pool: first-pool  # Match your IPAddressPool name
+    metallb.universe.tf/address-pool: homelab-pool
 spec:
   type: LoadBalancer
   ports:
