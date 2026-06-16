@@ -16,17 +16,20 @@ if ! kubectl get namespace "${NAMESPACE}" >/dev/null 2>&1; then
 fi
 
 echo "Applying Argo CD upstream install manifest: ${INSTALL_URL}"
-kubectl apply -n "${NAMESPACE}" -f "${INSTALL_URL}"
+# Server-side apply avoids storing the full manifest in the
+# kubectl.kubernetes.io/last-applied-configuration annotation, which is too
+# small to hold Argo CD's large CRDs (e.g. applicationsets.argoproj.io).
+kubectl apply --server-side --force-conflicts -n "${NAMESPACE}" -f "${INSTALL_URL}"
 
 echo "Waiting for Argo CD deployments to be ready..."
 kubectl -n "${NAMESPACE}" rollout status deploy/argocd-server --timeout=300s
 kubectl -n "${NAMESPACE}" rollout status deploy/argocd-repo-server --timeout=300s
-kubectl -n "${NAMESPACE}" rollout status deploy/argocd-application-controller --timeout=300s
+kubectl -n "${NAMESPACE}" rollout status statefulset/argocd-application-controller --timeout=300s
 # Dex may be optional depending on version/config; ignore errors if absent
 kubectl -n "${NAMESPACE}" rollout status deploy/argocd-dex-server --timeout=300s || true
 
 # Apply local ingress if present
-INGRESS_YAML="${SCRIPT_DIR}/argocd/argocd-ingress.yml"
+INGRESS_YAML="${SCRIPT_DIR}/argocd/configs/argocd-ingress/argocd-ingress.yml"
 if [[ -f "${INGRESS_YAML}" ]]; then
   echo "Applying local Argo CD ingress: ${INGRESS_YAML}"
   kubectl apply -f "${INGRESS_YAML}"
