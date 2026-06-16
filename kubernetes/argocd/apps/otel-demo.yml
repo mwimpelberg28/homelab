@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: otel-demo
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: otel-demo
+
+  sources:
+    - repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+      chart: opentelemetry-demo
+      targetRevision: 0.40.9
+      helm:
+        releaseName: otel-demo
+        values: |
+          # Send all telemetry straight to the existing otelcol-agent collector
+          # instead of the chart's bundled one (avoids duplicate host/cluster
+          # metrics collection and a second hop).
+          default:
+            envOverrides:
+              - name: OTEL_COLLECTOR_NAME
+                value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local
+
+          # Disabled: telemetry already lands in the homelab's Grafana/Loki/Tempo/
+          # Prometheus stack via otelcol-agent, so these bundled backends are redundant.
+          opentelemetry-collector:
+            enabled: false
+          jaeger:
+            enabled: false
+          prometheus:
+            enabled: false
+          grafana:
+            enabled: false
+          opensearch:
+            enabled: false
+    - repoURL: https://github.com/mwimpelberg28/homelab.git
+      targetRevision: main
+      path: kubernetes/argocd/configs/otel-demo-lb
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
