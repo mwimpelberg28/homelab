@@ -44,12 +44,17 @@ spec:
             enabled: false
 
           # Replace the Locust image with the custom k6 build from the fork.
+          # Drop memory from chart default 1500Mi to 512Mi — k6 needs far less
+          # than Locust, and the lower limit lets rolling updates fit on one node.
           components:
             load-generator:
               imageOverride:
                 repository: ghcr.io/mwimpelberg28/opentelemetry-demo
                 tag: load-generator
                 pullPolicy: Always
+              resources:
+                limits:
+                  memory: 512Mi
     - repoURL: https://github.com/mwimpelberg28/homelab.git
       targetRevision: main
       path: kubernetes/argocd/configs/otel-demo-lb
