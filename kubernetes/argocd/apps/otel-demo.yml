@@ -23,7 +23,7 @@ spec:
             envOverrides:
               - name: OTEL_COLLECTOR_NAME
                 value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local
-              - name: K6_OTL_EXPORTER_PROTOCOL
+              - name: K6_OTEL_EXPORTER_PROTOCOL
                 value: grpc
               - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
                 value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
@@ -42,10 +42,9 @@ spec:
             enabled: false
 
           # Replace the Locust image with the custom k6 build from the fork.
-          # Drop memory from chart default 1500Mi to 512Mi — k6 needs far less
-          # than Locust, and the lower limit lets rolling updates fit on one node.
-          # K6_BROWSER_ENABLED is intentionally omitted (defaults to false in the
-          # script) — Chromium requires a relaxed securityContext not set here.
+          # Memory bumped from 512Mi to 768Mi to accommodate the Chromium process
+          # used by the browser scenario.
+          # seccompProfile Unconfined allows Chromium's required syscalls.
           components:
             load-generator:
               imageOverride:
@@ -54,7 +53,17 @@ spec:
                 pullPolicy: Always
               resources:
                 limits:
-                  memory: 512Mi
+                  memory: 768Mi
+              podSecurityContext:
+                seccompProfile:
+                  type: Unconfined
+              env:
+                - name: K6_BROWSER_ENABLED
+                  value: "true"
+                - name: K6_BROWSER_EXECUTABLE_PATH
+                  value: /usr/bin/chromium
+                - name: K6_BROWSER_ARGS
+                  value: --no-sandbox,--disable-dev-shm-usage,--disable-gpu,--disable-setuid-sandbox,--disable-software-rasterizer
     - repoURL: https://github.com/mwimpelberg28/homelab.git
       targetRevision: main
       path: kubernetes/argocd/configs/otel-demo-lb
