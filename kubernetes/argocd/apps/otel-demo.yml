@@ -23,6 +23,12 @@ spec:
             envOverrides:
               - name: OTEL_COLLECTOR_NAME
                 value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local
+              - name: K6_BROWSER_ENABLED
+                value: "true"
+              - name: K6_OTEL_EXPORTER_PROTOCOL
+                value: grpc
+              - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
+                value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
 
           # Disabled: telemetry already lands in the homelab's Grafana/Loki/Tempo/
           # Prometheus stack via otelcol-agent, so these bundled backends are redundant.
@@ -36,6 +42,14 @@ spec:
             enabled: false
           opensearch:
             enabled: false
+
+          # Replace the Locust image with the custom k6 build from the fork.
+          components:
+            loadGenerator:
+              imageOverride:
+                repository: ghcr.io/mwimpelberg28/opentelemetry-demo
+                tag: load-generator
+                pullPolicy: Always
     - repoURL: https://github.com/mwimpelberg28/homelab.git
       targetRevision: main
       path: kubernetes/argocd/configs/otel-demo-lb
