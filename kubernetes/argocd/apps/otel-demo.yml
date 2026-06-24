@@ -29,6 +29,8 @@ spec:
                 value: grpc
               - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
                 value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
+              - name: K6_BROWSER_EXECUTABLE_PATH
+                value: /usr/bin/chromium
 
           # Disabled: telemetry already lands in the homelab's Grafana/Loki/Tempo/
           # Prometheus stack via otelcol-agent, so these bundled backends are redundant.
