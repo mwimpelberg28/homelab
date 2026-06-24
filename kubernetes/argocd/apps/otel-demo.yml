@@ -45,7 +45,7 @@ spec:
 
           # Replace the Locust image with the custom k6 build from the fork.
           components:
-            loadGenerator:
+            load-generator:
               imageOverride:
                 repository: ghcr.io/mwimpelberg28/opentelemetry-demo
                 tag: load-generator
