@@ -8,7 +8,7 @@ spec:
   sources:
   - repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
     chart: opentelemetry-collector
-    targetRevision: 0.158.1
+    targetRevision: 0.159.1
     helm:
       releaseName: otelcol-agent
       valueFiles:
