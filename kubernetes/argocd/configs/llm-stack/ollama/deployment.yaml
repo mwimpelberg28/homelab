@@ -25,7 +25,7 @@ spec:
               ollama serve &
               OLLAMA_PID=$!
               sleep 5
-              ollama pull qwen2.5-coder:14b
+              ollama pull qwen2.5-coder:3b
               kill $OLLAMA_PID
           env:
             - name: OLLAMA_HOST
@@ -53,15 +53,17 @@ spec:
               value: /models
             - name: OLLAMA_NUM_PARALLEL
               value: "2"
+            - name: OLLAMA_CONTEXT_LENGTH
+              value: "2048"
           volumeMounts:
             - name: models
               mountPath: /models
           resources:
             requests:
-              memory: "10Gi"
+              memory: "2Gi"
               cpu: "2"
             limits:
-              memory: "14Gi"
+              memory: "4Gi"
               cpu: "4"
           livenessProbe:
             httpGet:
