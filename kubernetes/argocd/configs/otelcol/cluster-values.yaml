@@ -1,0 +1,51 @@
+mode: deployment
+replicaCount: 1
+
+image:
+  repository: otel/opentelemetry-collector-contrib
+
+presets:
+  clusterMetrics:
+    enabled: true
+  kubernetesEvents:
+    enabled: true
+
+ports:
+  otlp:
+    enabled: false
+  otlp-http:
+    enabled: false
+
+config:
+  processors:
+    memory_limiter:
+      check_interval: 5s
+      limit_percentage: 80
+      spike_limit_percentage: 25
+    batch:
+      timeout: 10s
+
+  exporters:
+    prometheusremotewrite:
+      endpoint: "http://10.4.20.147:9009/api/v1/push"
+      headers:
+        X-Scope-OrgID: "anonymous"
+      resource_to_telemetry_conversion:
+        enabled: true
+      tls:
+        insecure: true
+    otlphttp/loki:
+      endpoint: "http://10.4.20.147:3100/otlp"
+      tls:
+        insecure: true
+
+  service:
+    pipelines:
+      metrics:
+        receivers:  [k8s_cluster]
+        processors: [memory_limiter, batch]
+        exporters:  [prometheusremotewrite]
+      logs:
+        receivers:  [k8sobjects]
+        processors: [memory_limiter, batch]
+        exporters:  [otlphttp/loki]

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: otelcol-cluster
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: https://open-telemetry.github.io/opentelemetry-helm-charts
+    chart: opentelemetry-collector
+    targetRevision: 0.158.1
+    helm:
+      releaseName: otelcol-cluster
+      valueFiles:
+      - $values/kubernetes/argocd/configs/otelcol/cluster-values.yaml
+  - repoURL: https://github.com/mwimpelberg28/homelab.git
+    targetRevision: main
+    ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: otelcol
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

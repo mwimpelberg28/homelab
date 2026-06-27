@@ -1,0 +1,105 @@
+mode: daemonset
+
+image:
+  repository: otel/opentelemetry-collector-contrib
+
+presets:
+  hostMetrics:
+    enabled: true
+  kubeletMetrics:
+    enabled: true
+  logsCollection:
+    enabled: true
+    includeCollectorLogs: false
+  kubernetesAttributes:
+    enabled: true
+    extractAllPodLabels: true
+
+tolerations:
+  - key: node-role.kubernetes.io/control-plane
+    operator: Exists
+    effect: NoSchedule
+
+service:
+  enabled: true
+  type: ClusterIP
+
+ports:
+  otlp:
+    enabled: true
+    containerPort: 4317
+    servicePort: 4317
+    hostPort: 0
+    protocol: TCP
+  otlp-http:
+    enabled: true
+    containerPort: 4318
+    servicePort: 4318
+    hostPort: 0
+    protocol: TCP
+  jaeger-compact:
+    enabled: false
+  jaeger-thrift:
+    enabled: false
+  jaeger-grpc:
+    enabled: false
+  zipkin:
+    enabled: false
+
+config:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: "0.0.0.0:4317"
+        http:
+          endpoint: "0.0.0.0:4318"
+    kubeletstats:
+      insecure_skip_verify: true
+
+  processors:
+    memory_limiter:
+      check_interval: 5s
+      limit_percentage: 80
+      spike_limit_percentage: 25
+    batch:
+      timeout: 10s
+      send_batch_size: 1000
+    resource/node_name:
+      attributes:
+        - key: host.name
+          value: "${env:K8S_NODE_NAME}"
+          action: upsert
+
+  exporters:
+    prometheusremotewrite:
+      endpoint: "http://10.4.20.147:9009/api/v1/push"
+      headers:
+        X-Scope-OrgID: "anonymous"
+      resource_to_telemetry_conversion:
+        enabled: true
+      tls:
+        insecure: true
+    otlphttp/loki:
+      endpoint: "http://10.4.20.147:3100/otlp"
+      tls:
+        insecure: true
+    otlp/tempo:
+      endpoint: "10.4.20.147:4317"
+      tls:
+        insecure: true
+
+  service:
+    pipelines:
+      metrics:
+        receivers:  [otlp, hostmetrics, kubeletstats]
+        processors: [memory_limiter, resource/node_name, k8sattributes, batch]
+        exporters:  [prometheusremotewrite]
+      logs:
+        receivers:  [otlp, filelog]
+        processors: [memory_limiter, resource/node_name, k8sattributes, batch]
+        exporters:  [otlphttp/loki]
+      traces:
+        receivers:  [otlp]
+        processors: [memory_limiter, resource/node_name, k8sattributes, batch]
+        exporters:  [otlp/tempo]
