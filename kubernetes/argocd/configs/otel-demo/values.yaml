@@ -1,0 +1,44 @@
+# Send all telemetry to the existing otelcol-agent collector instead of the
+# chart's bundled one — avoids duplicate host/cluster metrics and a second hop.
+default:
+  envOverrides:
+    - name: OTEL_COLLECTOR_NAME
+      value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local
+    - name: K6_OTEL_EXPORTER_PROTOCOL
+      value: grpc
+    - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
+      value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
+
+# Disabled: telemetry lands in the homelab Grafana/Loki/Tempo/Prometheus stack
+# via otelcol-agent, so these bundled backends are redundant.
+opentelemetry-collector:
+  enabled: false
+jaeger:
+  enabled: false
+prometheus:
+  enabled: false
+grafana:
+  enabled: false
+opensearch:
+  enabled: false
+
+# Custom k6 build with browser scenario support.
+components:
+  load-generator:
+    imageOverride:
+      repository: ghcr.io/mwimpelberg28/opentelemetry-demo
+      tag: load-generator
+      pullPolicy: Always
+    resources:
+      limits:
+        memory: 768Mi
+    podSecurityContext:
+      seccompProfile:
+        type: Unconfined
+    env:
+      - name: K6_BROWSER_ENABLED
+        value: "true"
+      - name: K6_BROWSER_EXECUTABLE_PATH
+        value: /usr/bin/chromium
+      - name: K6_BROWSER_ARGS
+        value: --no-sandbox,--disable-dev-shm-usage,--disable-gpu,--disable-setuid-sandbox,--disable-software-rasterizer
