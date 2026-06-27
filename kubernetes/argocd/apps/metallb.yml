@@ -17,6 +17,13 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: metallb-system
+  ignoreDifferences:
+  - group: apiextensions.k8s.io
+    kind: CustomResourceDefinition
+    name: bgppeers.metallb.io
+    jsonPointers:
+    - /spec
+    - /status
   syncPolicy:
     automated:
       prune: true
