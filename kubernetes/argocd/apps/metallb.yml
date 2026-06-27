@@ -8,7 +8,7 @@ spec:
   sources:
   - repoURL: https://metallb.github.io/metallb
     chart: metallb
-    targetRevision: 0.13.11
+    targetRevision: 0.14.9
     helm:
       releaseName: metallb
   - repoURL: https://github.com/mwimpelberg28/homelab.git
@@ -18,8 +18,6 @@ spec:
     server: https://kubernetes.default.svc
     namespace: metallb-system
   syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
     syncOptions:
     - CreateNamespace=true
+    - ServerSideApply=true

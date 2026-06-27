@@ -1,8 +1,8 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: first-pool
+  name: homelab-pool
   namespace: metallb-system
 spec:
   addresses:
-  - 10.4.20.15-10.4.20.20
+  - 10.4.20.2-10.4.20.6
