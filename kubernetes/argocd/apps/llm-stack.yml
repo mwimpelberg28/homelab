@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: llm-stack
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/mwimpelberg28/homelab.git
+    targetRevision: main
+    path: kubernetes/argocd/configs/llm-stack
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: llm-stack
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - ServerSideApply=true

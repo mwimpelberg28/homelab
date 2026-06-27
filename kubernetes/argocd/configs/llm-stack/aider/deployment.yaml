@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aider
+  namespace: llm-stack
+  labels:
+    app: aider
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aider
+  template:
+    metadata:
+      labels:
+        app: aider
+    spec:
+      containers:
+        - name: aider
+          image: paulgauthier/aider:v0.83.2
+          command: ["sleep", "infinity"]
+          env:
+            - name: OPENAI_API_BASE
+              value: "http://ollama.llm-stack.svc.cluster.local:11434/v1"
+            - name: OPENAI_API_KEY
+              value: "ollama"
+          volumeMounts:
+            - name: aider-config
+              mountPath: /root/.aider.conf.yml
+              subPath: aider.conf.yml
+            - name: workspace
+              mountPath: /workspace
+          workingDir: /workspace
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+      volumes:
+        - name: aider-config
+          configMap:
+            name: aider-config
+            items:
+              - key: aider.conf.yml
+                path: aider.conf.yml
+        - name: workspace
+          emptyDir: {}

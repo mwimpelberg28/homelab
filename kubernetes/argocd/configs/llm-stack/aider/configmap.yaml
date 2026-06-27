@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aider-config
+  namespace: llm-stack
+data:
+  aider.conf.yml: |
+    openai-api-base: http://ollama.llm-stack.svc.cluster.local:11434/v1
+    openai-api-key: ollama
+    model: openai/qwen2.5-coder:14b
+
+    auto-commits: false
+    dirty-commits: false
+    suggest-shell-commands: true
+    stream: true
+
+    map-tokens: 1024
