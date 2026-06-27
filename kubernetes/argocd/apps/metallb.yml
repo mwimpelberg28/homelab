@@ -6,6 +6,11 @@ metadata:
 spec:
   project: default
   sources:
+  - repoURL: https://metallb.github.io/metallb
+    chart: metallb
+    targetRevision: 0.13.11
+    helm:
+      releaseName: metallb
   - repoURL: https://github.com/mwimpelberg28/homelab.git
     targetRevision: main
     path: kubernetes/argocd/configs/metallb
@@ -18,4 +23,3 @@ spec:
       selfHeal: true
     syncOptions:
     - CreateNamespace=true
-
