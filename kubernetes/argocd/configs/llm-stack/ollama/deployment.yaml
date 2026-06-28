@@ -15,6 +15,7 @@ spec:
       labels:
         app: ollama
     spec:
+      nodeName: k8s-c01-n03
       initContainers:
         - name: pull-model
           image: ollama/ollama:0.9.3
@@ -52,18 +53,22 @@ spec:
             - name: OLLAMA_MODELS
               value: /models
             - name: OLLAMA_NUM_PARALLEL
-              value: "2"
+              value: "1"
             - name: OLLAMA_CONTEXT_LENGTH
               value: "2048"
+            - name: OLLAMA_FLASH_ATTENTION
+              value: "1"
+            - name: OLLAMA_KV_CACHE_TYPE
+              value: "q8_0"
           volumeMounts:
             - name: models
               mountPath: /models
           resources:
             requests:
-              memory: "2Gi"
+              memory: "8Gi"
               cpu: "2"
             limits:
-              memory: "4Gi"
+              memory: "12Gi"
               cpu: "4"
           livenessProbe:
             httpGet:

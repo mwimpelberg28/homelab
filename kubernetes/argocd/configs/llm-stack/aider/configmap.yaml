@@ -7,7 +7,7 @@ data:
   aider.conf.yml: |
     openai-api-base: http://ollama.llm-stack.svc.cluster.local:11434/v1
     openai-api-key: ollama
-    model: openai/qwen2.5-coder:14b
+    model: openai/qwen2.5-coder:3b
 
     auto-commits: false
     dirty-commits: false
