@@ -9,10 +9,14 @@ Manifests and helper files to bootstrap and manage a home Kubernetes cluster wit
 - `canal.yml`: Installs the Canal CNI (Calico + Flannel) for cluster networking.
 - `terraform/vms.tf`: Terraform for provisioning cluster VMs (provider-specific; update variables/provider to match your environment).
 - `argocd/`
-  - `argocd-ingress.yml`: Ingress for Argo CD (choose this or the one under `metallb/`, not both).
-  - `longhorn.yml`: Argo CD Application or manifests to install Longhorn.
-  - `longhornconfigs.yml`: Longhorn StorageClass / settings.
-  - `metallb.yml`: Argo CD Application or manifests to deploy MetalLB.
+  - `apps/argocd-ingress.yml`: Ingress for Argo CD UI/API.
+  - `apps/metallb.yml`: Argo CD Application for MetalLB.
+  - `apps/longhorn.yml`: Argo CD Application for Longhorn.
+  - `apps/llm-stack.yml`: Argo CD Application for local LLM inference (Ollama + Open WebUI + Aider).
+  - `apps/otelcol-agent.yml`: Argo CD Application for OpenTelemetry node-level collector.
+  - `apps/otelcol-cluster.yml`: Argo CD Application for OpenTelemetry cluster-level collector.
+  - `apps/otel-demo.yml`: Argo CD Application for the OpenTelemetry demo app.
+  - `configs/`: Per-app manifests and Helm values referenced by the Applications above.
 - `metallb/`
   - `metallb-native.yaml`: MetalLB (native mode) core components.
   - `ipaddresspool.yaml`: IPAddressPool CR; set the LoadBalancer IP range for your LAN.
@@ -113,7 +117,7 @@ kubectl get ingress -n argocd
 ```
 
 ### 5) Deploy MetalLB via Argo CD
-Edit `argocd/apps/metallb/ipaddresspool.yaml` to set an address range on your LAN that MetalLB may allocate (non‑overlapping with DHCP), then deploy MetalLB via Argo CD:
+Edit `argocd/configs/metallb/ipaddresspool.yaml` to set an address range on your LAN that MetalLB may allocate (non‑overlapping with DHCP), then deploy MetalLB via Argo CD:
 
 ```bash
 kubectl apply -f argocd/apps/metallb.yml
@@ -132,7 +136,6 @@ Deploy Longhorn storage using the Argo CD Application:
 
 ```bash
 kubectl apply -f argocd/apps/longhorn.yml
-kubectl apply -f argocd/apps/longhornconfigs.yml
 ```
 
 Validate storage is available:
@@ -140,6 +143,35 @@ Validate storage is available:
 ```bash
 kubectl get pods -n longhorn-system
 kubectl get sc
+```
+
+### 7) Deploy LLM Stack
+Deploys Ollama (CPU inference), Open WebUI, and Aider into the `llm-stack` namespace:
+
+```bash
+kubectl apply -f argocd/apps/llm-stack.yml
+```
+
+Validate:
+
+```bash
+kubectl get pods -n llm-stack
+```
+
+### 8) Deploy Observability (OpenTelemetry)
+Deploys node-level and cluster-level collectors plus the OTel demo app:
+
+```bash
+kubectl apply -f argocd/apps/otelcol-agent.yml
+kubectl apply -f argocd/apps/otelcol-cluster.yml
+kubectl apply -f argocd/apps/otel-demo.yml
+```
+
+Validate:
+
+```bash
+kubectl get pods -n otelcol
+kubectl get pods -n otel-demo
 ```
 
 ## Common checks

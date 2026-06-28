@@ -35,9 +35,23 @@ Self-hosted services running on Raspberry Pi hardware:
 
 Each service uses Docker Compose for easy deployment and management. See [services/rpi4/README.md](services/rpi4/README.md) for usage.
 
+### LLM Stack
+Self-hosted AI inference running in the `llm-stack` namespace:
+
+- **Ollama:** Runs `qwen2.5-coder:3b` on CPU, pinned to the high-memory node, managed via [kubernetes/argocd/configs/llm-stack/ollama/](kubernetes/argocd/configs/llm-stack/ollama/)
+- **Open WebUI:** Chat interface for Ollama — [kubernetes/argocd/configs/llm-stack/open-webui/](kubernetes/argocd/configs/llm-stack/open-webui/)
+- **Aider:** AI coding assistant wired to Ollama — [kubernetes/argocd/configs/llm-stack/aider/](kubernetes/argocd/configs/llm-stack/aider/)
+
+### Observability
+OpenTelemetry-based observability running in the `otelcol` and `otel-demo` namespaces:
+
+- **otelcol-agent:** Node-level DaemonSet collector forwarding telemetry
+- **otelcol-cluster:** Cluster-level collector aggregating from agents
+- **otel-demo:** OpenTelemetry demo app for testing the pipeline
+
 ### Network & Monitoring
 - **Network:** Documentation and topology diagrams — see [network/README.md](network/README.md)
-- **Monitoring:** Observability stack placeholders and future dashboards — see [monitoring/README.md](monitoring/README.md)
+- **Monitoring:** Observability stack docs — see [monitoring/README.md](monitoring/README.md)
 
 ## Getting Started
 
