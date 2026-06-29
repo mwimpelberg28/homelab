@@ -8,6 +8,8 @@ default:
       value: grpc
     - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
       value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
+    - name: K6_OTEL_GRPC_EXPORTER_INSECURE
+      value: "true"
 
 # Disabled: telemetry lands in the homelab Grafana/Loki/Tempo/Prometheus stack
 # via otelcol-agent, so these bundled backends are redundant.
