@@ -41,4 +41,4 @@ components:
       - name: K6_BROWSER_EXECUTABLE_PATH
         value: /usr/bin/chromium
       - name: K6_BROWSER_ARGS
-        value: --no-sandbox,--disable-dev-shm-usage,--disable-gpu,--disable-setuid-sandbox,--disable-software-rasterizer
+        value: no-sandbox,disable-dev-shm-usage,disable-gpu,disable-setuid-sandbox,disable-software-rasterizer
