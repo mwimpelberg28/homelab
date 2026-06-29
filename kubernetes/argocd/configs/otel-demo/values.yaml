@@ -31,7 +31,7 @@ components:
       pullPolicy: Always
     resources:
       limits:
-        memory: 768Mi
+        memory: 1.5Gi
     podSecurityContext:
       seccompProfile:
         type: Unconfined
