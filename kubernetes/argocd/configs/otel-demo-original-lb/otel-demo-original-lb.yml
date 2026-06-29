@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-demo-original-frontend-proxy-lb
+  namespace: otel-demo-original
+  annotations:
+    metallb.universe.tf/address-pool: homelab-pool
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    opentelemetry.io/name: frontend-proxy
