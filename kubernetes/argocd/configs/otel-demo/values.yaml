@@ -9,16 +9,17 @@ default:
     - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
       value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
 
-# Disabled: telemetry lands in the homelab Grafana/Loki/Tempo/Prometheus stack
-# via otelcol-agent, so these bundled backends are redundant.
+# opentelemetry-collector and opensearch stay disabled: telemetry still lands
+# in the homelab stack via otelcol-agent, and opensearch is unused. Prometheus,
+# grafana, and jaeger are enabled to run as part of this demo's own stack.
 opentelemetry-collector:
   enabled: false
 jaeger:
-  enabled: false
+  enabled: true
 prometheus:
-  enabled: false
+  enabled: true
 grafana:
-  enabled: false
+  enabled: true
 opensearch:
   enabled: false
 
