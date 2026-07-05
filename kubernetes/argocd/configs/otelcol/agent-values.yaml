@@ -88,6 +88,12 @@ config:
       endpoint: "10.4.20.147:4317"
       tls:
         insecure: true
+    # otel-demo's bundled Prometheus server runs with --web.enable-otlp-receiver,
+    # so it accepts OTLP metrics directly at /api/v1/otlp/v1/metrics.
+    otlphttp/otel_demo_prometheus:
+      endpoint: "http://prometheus.otel-demo.svc.cluster.local:9090/api/v1/otlp"
+      tls:
+        insecure: true
 
   service:
     pipelines:
@@ -95,6 +101,14 @@ config:
         receivers:  [otlp, hostmetrics, kubeletstats]
         processors: [memory_limiter, resource/node_name, k8sattributes, batch]
         exporters:  [prometheusremotewrite]
+      # Dual-write otel-demo's own app telemetry into its bundled Prometheus too,
+      # so the demo's own Grafana/dashboards have local data alongside the
+      # homelab-wide Mimir copy from the pipeline above. Host/kubelet metrics
+      # aren't relevant to the demo, so they stay out of this pipeline.
+      metrics/otel-demo:
+        receivers:  [otlp]
+        processors: [memory_limiter, resource/node_name, k8sattributes, batch]
+        exporters:  [otlphttp/otel_demo_prometheus]
       logs:
         receivers:  [otlp, filelog]
         processors: [memory_limiter, resource/node_name, k8sattributes, batch]
