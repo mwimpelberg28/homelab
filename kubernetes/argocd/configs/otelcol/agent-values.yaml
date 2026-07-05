@@ -94,6 +94,10 @@ config:
       endpoint: "http://prometheus.otel-demo.svc.cluster.local:9090/api/v1/otlp"
       tls:
         insecure: true
+    otlp/otel_demo_jaeger:
+      endpoint: "jaeger.otel-demo.svc.cluster.local:4317"
+      tls:
+        insecure: true
 
   service:
     pipelines:
@@ -116,4 +120,5 @@ config:
       traces:
         receivers:  [otlp]
         processors: [memory_limiter, resource/node_name, k8sattributes, batch]
-        exporters:  [otlp/tempo]
+        # Dual-write to otel-demo's own Jaeger alongside the homelab-wide Tempo.
+        exporters:  [otlp/tempo, otlp/otel_demo_jaeger]
