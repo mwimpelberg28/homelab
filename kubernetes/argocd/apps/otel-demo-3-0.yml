@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: otel-demo-3-0
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: https://github.com/mwimpelberg28/opentelemetry-helm-charts.git
+    path: charts/opentelemetry-demo
+    targetRevision: demo-release-3-dot-0
+    helm:
+      releaseName: otel-demo-3-0
+      valueFiles:
+      - $values/kubernetes/argocd/configs/otel-demo-3-0/values.yaml
+  - repoURL: https://github.com/mwimpelberg28/homelab.git
+    targetRevision: main
+    ref: values
+  - repoURL: https://github.com/mwimpelberg28/homelab.git
+    targetRevision: main
+    path: kubernetes/argocd/configs/otel-demo-3-0-lb
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: otel-demo-3-0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

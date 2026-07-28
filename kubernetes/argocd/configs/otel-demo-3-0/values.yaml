@@ -1,0 +1,24 @@
+# Fully self-contained install of the 3.0 demo: its own collector, Jaeger,
+# Prometheus, Grafana, and OpenSearch all stay on the chart's defaults.
+# These two are off by default; enabling them lights up the full
+# continuous-profiling path introduced in 3.0.
+components:
+  firepit:
+    enabled: true
+
+otel-ebpf-profiler:
+  enabled: true
+
+# Full Prometheus stack (sub-components are off by default in the chart).
+prometheus:
+  alertmanager:
+    enabled: true
+  configmapReload:
+    prometheus:
+      enabled: true
+  kube-state-metrics:
+    enabled: true
+  prometheus-node-exporter:
+    enabled: true
+  prometheus-pushgateway:
+    enabled: true
