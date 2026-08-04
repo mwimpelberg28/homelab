@@ -29,7 +29,17 @@ opentelemetry-collector:
       hostPort: 19411
 
 # Full Prometheus stack (sub-components are off by default in the chart).
+# server.resources: the chart's 400Mi default limit isn't enough for this
+# deployment's WAL replay + scrape load (node-exporter, kube-state-metrics,
+# pushgateway, and the agent/tool/chatbot histograms), causing OOMKilled
+# crash loops.
 prometheus:
+  server:
+    resources:
+      requests:
+        memory: 512Mi
+      limits:
+        memory: 1Gi
   alertmanager:
     enabled: true
   configmapReload:
