@@ -9,6 +9,25 @@ components:
 otel-ebpf-profiler:
   enabled: true
 
+# The chart's default hostPorts collide with the cluster-wide otelcol
+# DaemonSet, which already binds 4317/4318/6831/14268/14250/9411 on every
+# node. Demo services reach this collector via its ClusterIP Service, not
+# hostPort, so remap hostPort only to unblock DaemonSet scheduling.
+opentelemetry-collector:
+  ports:
+    otlp:
+      hostPort: 14317
+    otlp-http:
+      hostPort: 14318
+    jaeger-compact:
+      hostPort: 16831
+    jaeger-thrift:
+      hostPort: 24268
+    jaeger-grpc:
+      hostPort: 24250
+    zipkin:
+      hostPort: 19411
+
 # Full Prometheus stack (sub-components are off by default in the chart).
 prometheus:
   alertmanager:
