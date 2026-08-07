@@ -28,6 +28,48 @@ opentelemetry-collector:
     zipkin:
       hostPort: 19411
 
+  # Dual-write into the homelab-wide OSS backends (same Mimir/Loki/Tempo the
+  # otelcol namespace's collectors use) alongside this demo's bundled
+  # Prometheus/OpenSearch/Jaeger. Only the exporters list per pipeline is
+  # overridden here; everything else in the chart's default config (receivers,
+  # processors) is left untouched by the merge.
+  config:
+    exporters:
+      prometheusremotewrite:
+        endpoint: "http://10.4.20.147:9009/api/v1/push"
+        headers:
+          X-Scope-OrgID: "anonymous"
+        resource_to_telemetry_conversion:
+          enabled: true
+        tls:
+          insecure: true
+      otlphttp/loki:
+        endpoint: "http://10.4.20.147:3100/otlp"
+        tls:
+          insecure: true
+      otlp/tempo:
+        endpoint: "10.4.20.147:4317"
+        tls:
+          insecure: true
+    service:
+      pipelines:
+        metrics:
+          exporters:
+            - otlp_http/prometheus
+            - debug
+            - prometheusremotewrite
+        logs:
+          exporters:
+            - opensearch
+            - debug
+            - otlphttp/loki
+        traces:
+          exporters:
+            - otlp_grpc/jaeger
+            - debug
+            - span_metrics
+            - otlp/tempo
+
 # Full Prometheus stack (sub-components are off by default in the chart).
 # server.resources: the chart's 400Mi default limit isn't enough for this
 # deployment's WAL replay + scrape load (node-exporter, kube-state-metrics,
