@@ -9,21 +9,17 @@ Manifests to expose Argo CD and manage cluster apps via GitOps.
 | `argocd-ingress.yml` | `argocd` | Ingress for the Argo CD UI/API |
 | `metallb.yml` | `metallb-system` | MetalLB bare-metal load balancer |
 | `longhorn.yml` | `longhorn-system` | Longhorn distributed block storage |
-| `llm-stack.yml` | `llm-stack` | Ollama + Open WebUI + Aider for local LLM inference |
 | `otelcol-agent.yml` | `otelcol` | OpenTelemetry node-level DaemonSet collector |
 | `otelcol-cluster.yml` | `otelcol` | OpenTelemetry cluster-level aggregating collector |
 | `otel-demo.yml` | `otel-demo` | OpenTelemetry demo application |
-| `otel-demo-3-0.yml` | `otel-demo-3-0` | OpenTelemetry demo application, 3.0 (self-contained, all services + full Prometheus stack) |
 
 ## Configs (`configs/`)
 
 Per-app configuration referenced by the ArgoCD Applications above:
 
-- `configs/llm-stack/` — Ollama, Open WebUI, and Aider manifests
 - `configs/otelcol/` — agent and cluster collector Helm values
 - `configs/otel-demo/` — demo app Helm values
-- `configs/otel-demo-3-0/` — demo app 3.0 Helm values
-- `configs/otel-demo-3-0-lb/` — LoadBalancer Service exposing the 3.0 demo's frontend-proxy
+- `configs/otel-demo-lb/` — LoadBalancer Service exposing the demo's frontend-proxy
 
 ## Prerequisites
 - A working Kubernetes cluster and `kubectl` context.
@@ -37,14 +33,10 @@ kubectl apply -f apps/argocd-ingress.yml
 kubectl apply -f apps/metallb.yml
 kubectl apply -f apps/longhorn.yml
 
-# LLM stack
-kubectl apply -f apps/llm-stack.yml
-
 # Observability
 kubectl apply -f apps/otelcol-agent.yml
 kubectl apply -f apps/otelcol-cluster.yml
 kubectl apply -f apps/otel-demo.yml
-kubectl apply -f apps/otel-demo-3-0.yml
 ```
 
 All apps use automated sync with self-heal, so Argo CD will reconcile state continuously after the Application resource is created.
