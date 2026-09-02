@@ -1,13 +1,12 @@
 # Send all telemetry to the existing otelcol-agent collector instead of the
 # chart's bundled one — avoids duplicate host/cluster metrics and a second hop.
+# Every component's default env resolves its OTLP endpoint from this var, so
+# it's the only override needed (load-generator's own default env already
+# wires K6's OTel output through it via HTTP, insecure, on :4318).
 default:
   envOverrides:
     - name: OTEL_COLLECTOR_NAME
       value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local
-    - name: K6_OTEL_EXPORTER_PROTOCOL
-      value: grpc
-    - name: K6_OTEL_GRPC_EXPORTER_ENDPOINT
-      value: otelcol-agent-opentelemetry-collector.otelcol.svc.cluster.local:4317
 
 # opentelemetry-collector and opensearch stay disabled: telemetry still lands
 # in the homelab stack via otelcol-agent, and opensearch is unused. Prometheus,
@@ -23,25 +22,12 @@ grafana:
 opensearch:
   enabled: false
 
-# Custom k6 build with browser scenario support.
+# The chart's default load-generator image (grafana/k6-with-browser based)
+# now bundles Chromium and enables the browser scenario out of the box, so
+# the custom fork image is no longer needed. Its default 512Mi limit still
+# isn't enough for k6 + a headless browser under load, so keep that bumped.
 components:
   load-generator:
-    imageOverride:
-      repository: ghcr.io/mwimpelberg28/opentelemetry-demo
-      tag: load-generator
-      pullPolicy: Always
     resources:
       limits:
         memory: 1.5Gi
-    podSecurityContext:
-      seccompProfile:
-        type: Unconfined
-    env:
-      - name: K6_BROWSER_ENABLED
-        value: "true"
-      - name: K6_BROWSER_EXECUTABLE_PATH
-        value: /usr/bin/chromium
-      - name: K6_BROWSER_ARGS
-        value: no-sandbox,disable-dev-shm-usage,disable-gpu,disable-setuid-sandbox,disable-software-rasterizer
-      - name: K6_OTEL_GRPC_EXPORTER_INSECURE
-        value: "true"
