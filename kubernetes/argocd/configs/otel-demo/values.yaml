@@ -31,3 +31,9 @@ components:
     resources:
       limits:
         memory: 1.5Gi
+  # ad's default 300Mi limit is too tight under load-generator traffic and
+  # was OOMKilling repeatedly (100+ restarts); give it more headroom.
+  ad:
+    resources:
+      limits:
+        memory: 450Mi
