@@ -18,15 +18,22 @@ jaeger:
 prometheus:
   enabled: true
   # n03's disk is under heavy I/O pressure, so TSDB WAL replay on startup
-  # takes far longer than the default liveness probe's ~75s grace period —
-  # prometheus was getting killed mid-replay and crash-looping forever.
-  # Give it a real startup window, decoupled from steady-state liveness.
+  # takes far longer than the default liveness probe's ~75s grace period,
+  # and also spikes memory well past the chart's 400Mi default — prometheus
+  # was getting killed mid-replay (both by the liveness probe and OOM) and
+  # crash-looping forever. Give it a real startup window, decoupled from
+  # steady-state liveness, and enough memory headroom to survive replay.
   server:
     startupProbe:
       enabled: true
       periodSeconds: 10
       failureThreshold: 60
       timeoutSeconds: 10
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        memory: 1Gi
 grafana:
   enabled: true
 opensearch:
