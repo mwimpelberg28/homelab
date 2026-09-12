@@ -22,7 +22,7 @@ The [kubernetes/](kubernetes/) directory contains everything needed to provision
 - **Networking:** Canal CNI (Flannel + Calico) for pod networking.
 - **GitOps:** Argo CD for declarative app deployment and management.
 - **Load Balancing:** MetalLB for bare-metal LoadBalancer services.
-- **Storage:** Longhorn for distributed block storage.
+- **Storage:** NFS-backed PVs (via csi-driver-nfs) against a Synology NAS share.
 - **ArgoCDInstall Script:** [kubernetes/install-argocd.sh](kubernetes/install-argocd.sh) automates Argo CD deployment.
 
 See [kubernetes/README.md](kubernetes/README.md) for detailed setup instructions.

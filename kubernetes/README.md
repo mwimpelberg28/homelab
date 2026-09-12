@@ -1,6 +1,6 @@
 # Homelab Kubernetes
 
-Manifests and helper files to bootstrap and manage a home Kubernetes cluster with Canal (CNI), MetalLB (bare‑metal load balancer), Argo CD (GitOps), and Longhorn (distributed block storage). It also includes optional Terraform to provision cluster VMs.
+Manifests and helper files to bootstrap and manage a home Kubernetes cluster with Canal (CNI), MetalLB (bare‑metal load balancer), Argo CD (GitOps), and NFS-backed persistent storage (via csi-driver-nfs) against a Synology NAS. It also includes optional Terraform to provision cluster VMs.
 
 > Tip: Apply resources gradually in the order below (CNI → MetalLB → Argo CD/Ingress → Storage), validating each step.
 
@@ -11,7 +11,7 @@ Manifests and helper files to bootstrap and manage a home Kubernetes cluster wit
 - `argocd/`
   - `apps/argocd-ingress.yml`: Ingress for Argo CD UI/API.
   - `apps/metallb.yml`: Argo CD Application for MetalLB.
-  - `apps/longhorn.yml`: Argo CD Application for Longhorn.
+  - `apps/csi-driver-nfs.yml`: Argo CD Application for the NFS CSI driver and its default StorageClass.
   - `apps/llm-stack.yml`: Argo CD Application for local LLM inference (Ollama + Open WebUI + Aider).
   - `apps/otelcol-agent.yml`: Argo CD Application for OpenTelemetry node-level collector.
   - `apps/otelcol-cluster.yml`: Argo CD Application for OpenTelemetry cluster-level collector.
@@ -131,17 +131,17 @@ kubectl get ipaddresspools.metallb.io -A
 kubectl get l2advertisements.metallb.io -A
 ```
 
-### 6) Deploy Longhorn via Argo CD
-Deploy Longhorn storage using the Argo CD Application:
+### 6) Deploy NFS storage via Argo CD
+Create the NFS export on your NAS first (a dedicated shared folder, NFS permissions open to the node subnet), then update `argocd/configs/csi-driver-nfs/storageclass.yaml` with its `server`/`share`, and deploy the Argo CD Application:
 
 ```bash
-kubectl apply -f argocd/apps/longhorn.yml
+kubectl apply -f argocd/apps/csi-driver-nfs.yml
 ```
 
 Validate storage is available:
 
 ```bash
-kubectl get pods -n longhorn-system
+kubectl get pods -n csi-driver-nfs
 kubectl get sc
 ```
 
@@ -188,8 +188,8 @@ kubectl get svc -A | grep LoadBalancer
 # Argo CD
 kubectl get pods -n argocd
 
-# Longhorn
-kubectl get pods -n longhorn-system
+# NFS storage
+kubectl get pods -n csi-driver-nfs
 kubectl get sc
 ```
 

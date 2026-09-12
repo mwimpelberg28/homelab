@@ -8,7 +8,7 @@ Manifests to expose Argo CD and manage cluster apps via GitOps.
 |---|---|---|
 | `argocd-ingress.yml` | `argocd` | Ingress for the Argo CD UI/API |
 | `metallb.yml` | `metallb-system` | MetalLB bare-metal load balancer |
-| `longhorn.yml` | `longhorn-system` | Longhorn distributed block storage |
+| `csi-driver-nfs.yml` | `csi-driver-nfs` | NFS CSI driver + default `nfs` StorageClass (Synology NAS-backed) |
 | `otelcol-agent.yml` | `otelcol` | OpenTelemetry node-level DaemonSet collector |
 | `otelcol-cluster.yml` | `otelcol` | OpenTelemetry cluster-level aggregating collector |
 | `otel-demo.yml` | `otel-demo` | OpenTelemetry demo application |
@@ -17,6 +17,7 @@ Manifests to expose Argo CD and manage cluster apps via GitOps.
 
 Per-app configuration referenced by the ArgoCD Applications above:
 
+- `configs/csi-driver-nfs/` — `nfs` StorageClass pointed at the NAS export
 - `configs/otelcol/` — agent and cluster collector Helm values
 - `configs/otel-demo/` — demo app Helm values
 - `configs/otel-demo-lb/` — LoadBalancer Service exposing the demo's frontend-proxy
@@ -31,7 +32,7 @@ Per-app configuration referenced by the ArgoCD Applications above:
 # Core infrastructure
 kubectl apply -f apps/argocd-ingress.yml
 kubectl apply -f apps/metallb.yml
-kubectl apply -f apps/longhorn.yml
+kubectl apply -f apps/csi-driver-nfs.yml
 
 # Observability
 kubectl apply -f apps/otelcol-agent.yml
