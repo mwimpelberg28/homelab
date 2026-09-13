@@ -7,8 +7,6 @@ metadata:
 provisioner: nfs.csi.k8s.io
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
-mountOptions:
-  - nfsvers=4.1
 parameters:
   server: 10.4.20.42
   share: /volume1/kubernetes
